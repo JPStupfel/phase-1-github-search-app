@@ -1,47 +1,22 @@
 //select form
 const subForm = document.querySelector('#github-form')
-let searchCrit = 'user'
 //add event listener to prevent default and handle search
 subForm.addEventListener('submit',(event)=>{
         //prevent default
         event.preventDefault();
-        console.log(event)
+
         //go ahead and clear the user list in case it's a new search
         let userList = document.querySelector('#user-list')
         while (userList.firstChild) {
             userList.removeChild(userList.firstChild);
         }
-        let repoList = document.querySelector('#repos-list')
-        while (repoList.firstChild) {
-            repoList.removeChild(repoList.firstChild);
-        }
-
-
         //handle search using search input value
-        if (searchCrit === 'user') {handleUserSearch(event.target.querySelector('#search').value);}
-        if (searchCrit === 'repo'){handleRepoSearch(event.target.querySelector('#search').value);}
-        
+        handleUserSearch(event.target.querySelector('#search').value);
         //clear the search input value
 
          event.target.querySelector('#search').value = ''
 
         })
-
-//add event listener to the toggle button that modifies searchCrit and changes button text
-document.querySelector('#toggle-button').addEventListener('click', ()=>{
-        if (searchCrit === 'user'){
-            searchCrit = 'repo';
-            document.querySelector('[name="submit"]').value = `search by ${searchCrit}`;
-            document.querySelector('#toggle-button').value = `search instead by user`
-            }
-        else {
-            searchCrit = 'user'
-            document.querySelector('[name="submit"]').value = `search by ${searchCrit}`;
-            document.querySelector('#toggle-button').value = `search instead by repo`
-            }
-
-
-    })
 
 function handleUserSearch(search){
     fetch(`https://api.github.com/search/users?q=${search}`, {Accept: 'application/vnd.github.v3+json' }).then(res=>res.json()).then(data=>{ 
@@ -110,7 +85,7 @@ function createNameCard(name, image, repoUrl){
 
 //separate search function for repos
 function handleRepoSearch(search){
-    fetch(`https://api.github.com/search/repositories?q=${search}`, {Accept: 'application/vnd.github.v3+json' }).then(res=>res.json()).then(data=>{ console.log(data['items']); 
+    fetch(`https://api.github.com/search/repositories?q=${search}`, {Accept: 'application/vnd.github.v3+json' }).then(res=>res.json()).then(data=>{ console.log(data['items']); debugger;
 
         // for all the results, 
             for (let i = 0; i<data['items'].length; i++)
